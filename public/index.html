@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>TaskFlow | Project Management Tool</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Google Fonts - Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="theme-toggle">
+    <button id="theme-toggle-btn" aria-label="Toggle dark/light mode">
+      <i class="fa-solid fa-sun"></i>
+      <i class="fa-solid fa-moon"></i>
+    </button>
+  </div>
+  
+  <header>
+    <h1 class="app-title"><i class="fa-solid fa-tasks"></i> TaskFlow</h1>
+    <p class="tagline">Streamline your project management</p>
+  </header>
+
+  <!-- Add Project Section -->
+  <h2 class="section-title">Add New Project</h2>
+  <div class="card">
+    <form id="add-project">
+      <input type="text" id="title" placeholder="Project Title" required>
+      <input type="date" id="deadline" required>
+      <textarea id="description" rows="3" placeholder="Project Description"></textarea>
+      <select id="status" required>
+        <option value="" disabled selected>Select Status</option>
+        <option>Not Started</option>
+        <option>In Progress</option>
+        <option>Completed</option>
+      </select>
+      <select name="priority" id="priority" required>
+        <option value="">Select Priority</option>
+        <option value="High">High</option>
+        <option value="Medium">Medium</option>
+        <option value="Low">Low</option>
+      </select>
+      
+      <button type="submit"><i class="fa-solid fa-plus"></i> Add Project</button>
+    </form>
+  </div>
+
+  <!-- Projects List Section -->
+  <h2 class="section-title">My Projects</h2>
+  <div id="projects">
+    <!-- Projects will be dynamically added here -->
+  </div>
+
+  <footer>
+    <p>&copy; 2025 TaskFlow - Project Management Tool</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

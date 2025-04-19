@@ -1,0 +1,19 @@
+CREATE TABLE projects (
+  id NUMBER PRIMARY KEY,
+  title VARCHAR2(255),
+  description CLOB,
+  deadline DATE,
+  status VARCHAR2(50),
+  priority VARCHAR2(20),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE SEQUENCE project_seq START WITH 1 INCREMENT BY 1;
+
+CREATE OR REPLACE TRIGGER trg_project_id
+BEFORE INSERT ON projects
+FOR EACH ROW
+BEGIN
+  :NEW.id := project_seq.NEXTVAL;
+END;
+/

@@ -1,0 +1,554 @@
+:root {
+    /* Light Theme Variables */
+    --bg: #f5f7fa;
+    --card-bg: #ffffff;
+    --primary: #4361ee;
+    --primary-dark: #3a56d4;
+    --text: #2d3748;
+    --text-secondary: #718096;
+    --border: #e2e8f0;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --radius: 10px;
+    --gap: 16px;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+    --transition: all 0.2s ease;
+}
+
+/* Dark Theme Variables */
+[data-theme="dark"] {
+    --bg: #1a202c;
+    --card-bg: #2d3748;
+    --primary: #63b3ed;
+    --primary-dark: #4299e1;
+    --text: #f7fafc;
+    --text-secondary: #cbd5e0;
+    --border: #4a5568;
+    --success: #48bb78;
+    --warning: #ed8936;
+    --danger: #f56565;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+#theme-toggle-btn {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition);
+    padding: 0;
+}
+
+#theme-toggle-btn:hover {
+    transform: scale(1.1);
+}
+
+#theme-toggle-btn .fa-sun,
+#theme-toggle-btn .fa-moon {
+    position: absolute;
+    font-size: 1.2rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    transition: all 0.3s ease;
+}
+
+#theme-toggle-btn .fa-sun {
+    color: #f59e0b;
+    opacity: 1;
+}
+
+#theme-toggle-btn .fa-moon {
+    color: #4299e1;
+    opacity: 0;
+}
+
+[data-theme="dark"] #theme-toggle-btn .fa-sun {
+    opacity: 0;
+    transform: translate(-50%, -150%);
+}
+
+[data-theme="dark"] #theme-toggle-btn .fa-moon {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+}
+
+* { 
+    box-sizing: border-box; margin: 0; padding: 0; 
+}
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px var(--gap);
+    line-height: 1.5;
+}
+.card {
+    background: var(--card-bg);
+    width: 90%;
+    max-width: 900px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin: var(--gap) auto;
+    overflow: hidden;
+    transition: var(--transition);
+}
+.card:hover {
+    box-shadow: 0 10px 15px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+}
+/* Add-Project Form */
+#add-project {
+    padding: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: var(--gap);
+}
+#add-project input,
+#add-project textarea,
+#add-project select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 0.95rem;
+    font-family: 'Poppins', sans-serif;
+    transition: var(--transition);
+}
+#add-project input:focus,
+#add-project textarea:focus,
+#add-project select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+}
+#add-project textarea { 
+    resize: vertical; 
+    grid-column: span 2; 
+    min-height: 100px;
+}
+#add-project button {
+    grid-column: span 2;
+    padding: 12px;
+    border: none;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 600;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: var(--transition);
+    letter-spacing: 0.5px;
+}
+#add-project button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+}
+/* Project List */
+#projects { 
+    width: 100%;
+    max-width: 900px;
+}
+.project {
+    margin-bottom: 16px;
+    transition: var(--transition);
+}
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    cursor: pointer;
+}
+.project-header h3 {
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+.project-header .meta {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.chevron {
+    transition: transform 0.3s ease;
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+}
+.project-details {
+    padding: 0 20px 20px;
+    display: none;
+    border-top: 1px solid var(--border);
+    animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.project-details h4 {
+    margin: 16px 0 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+}
+.description-box {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    background: var(--bg);
+    min-height: 60px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    color: var(--text);
+}
+
+.description-content {
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: var(--text);
+}
+
+/* Add this to ensure description text is always visible */
+.description-box em {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.edit-btn {
+    background-color: var(--warning);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--radius);
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: var(--transition);
+}
+.edit-btn:hover {
+    background-color: #e89d0c;
+    transform: translateY(-1px);
+}
+.delete-btn {
+    background-color: var(--danger);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+.delete-btn:hover {
+    background-color: #dc2626;
+    transform: translateY(-1px);
+}
+.delete-btn-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+/* Status dropdown colors */
+.status-box {
+    padding: 6px 12px;
+    border-radius: 20px;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+}
+.status-box.not-started { background: var(--text-secondary); }
+.status-box.in-progress { background: var(--primary); }
+.status-box.completed  { background: var(--success); }
+
+/* Expanded state */
+.project.expanded .project-details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+}
+.project.expanded .chevron {
+    transform: rotate(90deg);
+}
+
+.priority-tag {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+}
+.priority-tag.high {
+    background-color: var(--danger);
+}
+.priority-tag.medium {
+    background-color: var(--warning);
+}
+.priority-tag.low {
+    background-color: var(--success);
+}
+
+.deadline {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+}
+
+.section-title {
+    width: 90%;
+    max-width: 900px;
+    margin: 32px auto 0;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text);
+    position: relative;
+    padding-left: 16px;
+}
+.section-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 5px;
+    background: var(--primary);
+    border-radius: 4px;
+}
+
+/* Edit inputs */
+.edit-title {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 1.15rem;
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 8px;
+    background-color: var(--card-bg);
+    color: var(--text);
+}
+.edit-description {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 0.95rem;
+    font-family: 'Poppins', sans-serif;
+    min-height: 120px;
+    resize: vertical;
+    background-color: var(--card-bg);
+    color: var(--text);
+}
+
+/* Custom Alert */
+.custom-alert {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 16px 24px;
+    border-radius: var(--radius);
+    background-color: var(--card-bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    z-index: 1000;
+    box-shadow: var(--shadow);
+    animation: slideIn 0.3s ease;
+    font-weight: 500;
+}
+
+@keyframes slideIn {
+    from { transform: translate(-50%, -20px); opacity: 0; }
+    to { transform: translate(-50%, 0); opacity: 1; }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    #add-project {
+        grid-template-columns: 1fr;
+    }
+    #add-project textarea,
+    #add-project button {
+        grid-column: span 1;
+    }
+    .card {
+        width: 95%;
+    }
+    .section-title {
+        width: 95%;
+        font-size: 1.5rem;
+    }
+    .project-header {
+        padding: 16px;
+    }
+    .project-details {
+        padding: 0 16px 16px;
+    }
+}
+
+/* Header */
+header {
+    text-align: center;
+    padding: 32px 0;
+    margin-bottom: 16px;
+    width: 100%;
+    max-width: 900px;
+}
+
+.app-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.app-title i {
+    margin-right: 12px;
+    font-size: 2.2rem;
+}
+
+.tagline {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    font-weight: 300;
+}
+
+/* Footer */
+footer {
+    margin-top: 40px;
+    padding: 24px 0;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    width: 100%;
+    border-top: 1px solid var(--border);
+}
+
+/* Add icons to buttons and status */
+.fa-solid, .fa-regular, .fas {
+    margin-right: 8px;
+}
+
+.status-box.not-started::before {
+    content: "\f111";  /* Circle */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-right: 6px;
+    font-size: 0.75rem;
+}
+
+.status-box.in-progress::before {
+    content: "\f254";  /* Hourglass */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-right: 6px;
+    font-size: 0.75rem;
+}
+
+.status-box.completed::before {
+    content: "\f00c";  /* Check */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-right: 6px;
+    font-size: 0.75rem;
+}
+
+.priority-tag.high::before {
+    content: "\f06a";  /* Exclamation circle */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-right: 6px;
+}
+
+.priority-tag.medium::before {
+    content: "\f071";  /* Exclamation triangle */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-right: 6px;
+}
+
+.priority-tag.low::before {
+    content: "\f05a";  /* Info circle */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-right: 6px;
+}
+
+.deadline::before {
+    content: "\f073";  /* Calendar */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-right: 6px;
+}
+
+.edit-btn::before {
+    content: "\f044";  /* Edit icon */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-right: 6px;
+}
+
+.delete-btn::before {
+    content: "\f2ed";  /* Trash icon */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-right: 6px;
+}
+
+/* Empty state for no projects */
+#projects:empty::after {
+    content: "No projects yet. Add your first project above!";
+    display: block;
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+    font-style: italic;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    margin-top: 20px;
+    box-shadow: var(--shadow);
+}
+
+/* Enhancing focus states for accessibility */
+button:focus, 
+input:focus, 
+select:focus, 
+textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.3);
+}
