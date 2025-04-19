@@ -50,4 +50,4 @@ db/creatingTables.sql
 
 - Frontend: HTML, CSS, JavaScript
 - Backend: Node.js, Express
-- Database: Oracle DB
+- Database: Oracle 11g XE DB
