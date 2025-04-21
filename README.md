@@ -1,6 +1,9 @@
 # TaskFlow
 
-A simple project management tool created for database management systems course. TaskFlow allows users to create, manage, and track projects with deadlines, priorities, and status updates.
+A simple project management tool created for database management system course in my college. 
+TaskFlow allows users to create, manage, and track projects with deadlines, priorities, and status updates.
+
+Note: The only reason to use Oracle 11g was that it was taught in my class. So I wanted to use it. Otherwise, much better and new databases are available that are easier to develop and deploy.
 
 ## Features
 
@@ -50,4 +53,4 @@ db/creatingTables.sql
 
 - Frontend: HTML, CSS, JavaScript
 - Backend: Node.js, Express
-- Database: Oracle DB
+- Database: Oracle 11g XE DB 
