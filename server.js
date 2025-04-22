@@ -346,6 +346,62 @@ app.post('/update-status', async (req, res) => {
   }
 });
 
+// Get Project Statistics
+app.get('/project-stats', async (req, res) => {
+  let connection;
+  try {
+    connection = await oracledb.getConnection(dbConfig);
+    
+    // Get counts by status
+    const statusResult = await connection.execute(
+      `SELECT STATUS, COUNT(*) as COUNT 
+       FROM PROJECTS 
+       GROUP BY STATUS 
+       ORDER BY STATUS`,
+      [],
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
+    
+    // Get counts by priority
+    const priorityResult = await connection.execute(
+      `SELECT PRIORITY, COUNT(*) as COUNT 
+       FROM PROJECTS 
+       GROUP BY PRIORITY 
+       ORDER BY PRIORITY`,
+      [],
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
+    
+    // Get total project count
+    const totalResult = await connection.execute(
+      `SELECT COUNT(*) as TOTAL FROM PROJECTS`,
+      [],
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
+
+    res.json({
+      success: true,
+      totalProjects: totalResult.rows[0].TOTAL,
+      byStatus: statusResult.rows,
+      byPriority: priorityResult.rows
+    });
+  } catch (err) {
+    console.error('Error fetching project statistics:', err);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Failed to fetch project statistics: ' + err.message 
+    });
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error('Error closing connection:', err);
+      }
+    }
+  }
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

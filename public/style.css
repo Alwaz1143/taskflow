@@ -552,3 +552,119 @@ textarea:focus {
     outline: none;
     box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.3);
 }
+
+/* Project Statistics Styles */
+.stats-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.stat-box {
+  background-color: var(--bg-secondary);
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.total-projects {
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  color: white;
+}
+
+.stat-title {
+  font-size: 1rem;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.stat-section {
+  margin-top: 10px;
+}
+
+.stat-section-title {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.stat-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stat-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.stat-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+}
+
+.stat-bar-progress {
+  height: 12px;
+  background-color: var(--bg-tertiary);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.stat-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.5s ease;
+}
+
+.stat-bar-fill.not-started {
+  background-color: #ff7676;
+}
+
+.stat-bar-fill.in-progress {
+  background-color: #ffba69;
+}
+
+.stat-bar-fill.completed {
+  background-color: #6cce9e;
+}
+
+.stat-bar-fill.high {
+  background-color: #ff5252;
+}
+
+.stat-bar-fill.medium {
+  background-color: #ffbe0b;
+}
+
+.stat-bar-fill.low {
+  background-color: #4caf50;
+}
+
+@media (min-width: 768px) {
+  .stats-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  .stat-box.total-projects {
+    flex: 1;
+    min-width: 150px;
+  }
+  
+  .stat-section {
+    flex: 2;
+    min-width: 300px;
+  }
+}
+
+/* End Project Statistics Styles */

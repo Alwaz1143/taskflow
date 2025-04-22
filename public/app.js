@@ -168,6 +168,9 @@ function addProjectToDOM(title, deadline, description, status, priority) {
         setTimeout(() => {
           alertDiv.remove();
         }, 3000);
+      } else {
+        // Reload statistics after status change
+        loadProjectStatistics();
       }
     } catch (err) {
       console.error('❌ Error updating status:', err);
@@ -219,6 +222,8 @@ function addProjectToDOM(title, deadline, description, status, priority) {
       const result = await res.json();
       if (res.ok) {
         projectsContainer.removeChild(proj);
+        // Reload statistics after deleting a project
+        loadProjectStatistics();
       } else {
         alert(result.error || 'Failed to delete project from database.');
       }
@@ -267,6 +272,8 @@ function addProjectToDOM(title, deadline, description, status, priority) {
           titleEl.textContent = newTitle || 'Untitled Project';
           descBox.innerHTML = newDesc ? sanitizeHTML(newDesc) : '<em>No description provided.</em>';
           editBtn.textContent = 'Edit';
+          // Reload statistics after updating a project
+          loadProjectStatistics();
         } else {
           // Create a custom alert that appears on top
           const alertDiv = document.createElement('div');
@@ -318,6 +325,9 @@ function addProjectToDOM(title, deadline, description, status, priority) {
   });
 
   projectsContainer.appendChild(proj);
+  
+  // Reload statistics after adding a project
+  loadProjectStatistics();
 }
 
 // Fetch and render saved projects from backend
@@ -361,10 +371,96 @@ async function loadProjects() {
   } catch (err) {
     console.error('❌ Error loading projects:', err);
   }
+  
+  // After loading projects, also load statistics
+  loadProjectStatistics();
 }
 
 // Initialize when page loads
 window.addEventListener('DOMContentLoaded', () => {
   setupThemeToggle();
   loadProjects();
+  // Load statistics immediately, don't wait for projects to load
+  loadProjectStatistics();
 });
+
+// Function to load project statistics
+async function loadProjectStatistics() {
+  try {
+    const response = await fetch('/project-stats');
+    
+    if (!response.ok) {
+      console.error('Failed to fetch project statistics');
+      return;
+    }
+    
+    const stats = await response.json();
+    
+    // Update total projects count
+    document.getElementById('total-projects').textContent = stats.totalProjects;
+    
+    // Update status breakdown
+    const statusStatsContainer = document.getElementById('status-stats');
+    statusStatsContainer.innerHTML = '';
+    
+    if (stats.byStatus.length === 0) {
+      statusStatsContainer.innerHTML = '<p class="no-data">No status data available</p>';
+    } else {
+      // Calculate total for percentages
+      const statusTotal = stats.byStatus.reduce((acc, curr) => acc + curr.COUNT, 0);
+      
+      // Add status bars
+      stats.byStatus.forEach(statusItem => {
+        const percentage = Math.round((statusItem.COUNT / statusTotal) * 100);
+        const statusClass = statusItem.STATUS.toLowerCase().replace(/\s+/g, '-');
+        
+        const statusBar = document.createElement('div');
+        statusBar.className = 'stat-bar';
+        statusBar.innerHTML = `
+          <div class="stat-bar-label">
+            <span>${statusItem.STATUS}</span>
+            <span>${statusItem.COUNT} (${percentage}%)</span>
+          </div>
+          <div class="stat-bar-progress">
+            <div class="stat-bar-fill ${statusClass}" style="width: ${percentage}%"></div>
+          </div>
+        `;
+        
+        statusStatsContainer.appendChild(statusBar);
+      });
+    }
+    
+    // Update priority distribution
+    const priorityStatsContainer = document.getElementById('priority-stats');
+    priorityStatsContainer.innerHTML = '';
+    
+    if (stats.byPriority.length === 0) {
+      priorityStatsContainer.innerHTML = '<p class="no-data">No priority data available</p>';
+    } else {
+      // Calculate total for percentages
+      const priorityTotal = stats.byPriority.reduce((acc, curr) => acc + curr.COUNT, 0);
+      
+      // Add priority bars
+      stats.byPriority.forEach(priorityItem => {
+        const percentage = Math.round((priorityItem.COUNT / priorityTotal) * 100);
+        const priorityClass = priorityItem.PRIORITY.toLowerCase();
+        
+        const priorityBar = document.createElement('div');
+        priorityBar.className = 'stat-bar';
+        priorityBar.innerHTML = `
+          <div class="stat-bar-label">
+            <span>${priorityItem.PRIORITY}</span>
+            <span>${priorityItem.COUNT} (${percentage}%)</span>
+          </div>
+          <div class="stat-bar-progress">
+            <div class="stat-bar-fill ${priorityClass}" style="width: ${percentage}%"></div>
+          </div>
+        `;
+        
+        priorityStatsContainer.appendChild(priorityBar);
+      });
+    }
+  } catch (err) {
+    console.error('Error loading statistics:', err);
+  }
+}

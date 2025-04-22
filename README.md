@@ -9,6 +9,7 @@ Note: The only reason to use Oracle 11g was that it was taught in my class. So I
 
 - Create and manage projects with title, description, deadline, and priority
 - Track project status (Not Started, In Progress, Completed)
+- View project statistics and distribution by status and priority
 - Dark/Light theme toggle with local storage persistence
 - Responsive design for all device sizes
 
